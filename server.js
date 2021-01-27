@@ -20,30 +20,26 @@ const client = new okta.Client({
 app.use(express.static("public"));
 
 // https://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
-});
+// app.get("/", (request, response) => {
+//   response.sendFile(__dirname + "/views/index.html");
+// });
 
 // send the default array of dreams to the webpage
-app.get("/getUsersWithGroups", (request, response) => {
+app.get("/", (request, response) => {
   // express helps us take JS objects and send them as JSON
   const orgUsersCollection = client.listUsers();
-  const users= [];
+  const userArray = 
   orgUsersCollection
     .each(user => {
-      var groups = user.listGroups();
-      var groupsArray = "";
       const groupsArr = [];
-      groups.each(group => {
-        
-        groupsArr.push(group.id);
-        const user = { "id" :user.id, "groups": groupsArr};
-        console.log(user);
-        users.push(user);
-      });
+      const groups = user
+        .listGroups()
+        .each(group => {
+          groupsArr.push({ group: group.id });
+        })
+        .then(() => console.log(groupsArr));
     })
     .then(() => console.log("All users have been listed"));
-  
 });
 
 // listen for requests :)
