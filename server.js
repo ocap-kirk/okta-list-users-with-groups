@@ -14,11 +14,6 @@ const client = new okta.Client({
 });
 
 // our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
 
 // make all the files in 'public' available
 // https://expressjs.com/en/starter/static-files.html
@@ -33,20 +28,22 @@ app.get("/", (request, response) => {
 app.get("/getUsersWithGroups", (request, response) => {
   // express helps us take JS objects and send them as JSON
   const orgUsersCollection = client.listUsers();
-
+  const users= [];
   orgUsersCollection
     .each(user => {
-      
       var groups = user.listGroups();
-     var groupsArray = "";
-      groups.each(group=> {
-        groupsArray += group.id +""
-        console.log(user.id, user.login, user.firstName, user.lastName,user.email, group.id, group.profile.name);
-      })
-      
+      var groupsArray = "";
+      const groupsArr = [];
+      groups.each(group => {
+        
+        groupsArr.push(group.id);
+        const user = { "id" :user.id, "groups": groupsArr};
+        console.log(user);
+        users.push(user);
+      });
     })
     .then(() => console.log("All users have been listed"));
-  response.json(dreams);
+  
 });
 
 // listen for requests :)
