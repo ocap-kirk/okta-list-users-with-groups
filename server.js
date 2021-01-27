@@ -28,16 +28,24 @@ app.use(express.static("public"));
 app.get("/", (request, response) => {
   // express helps us take JS objects and send them as JSON
   const orgUsersCollection = client.listUsers();
-  const userArray = 
+  const userArray = [];
   orgUsersCollection
     .each(user => {
       const groupsArr = [];
       const groups = user
         .listGroups()
         .each(group => {
-          groupsArr.push({ group: group.id });
+          groupsArr.push(group.id);
         })
-        .then(() => console.log(groupsArr));
+        .then(() => {
+          const userJ = {};
+          // console.log(user)
+          userJ.id = user.id;
+          userJ.login = user.profile.login;
+          userJ.groups = groupsArr;
+          console.log(userJ);
+          userArray.push(userJ)
+        });
     })
     .then(() => console.log("All users have been listed"));
 });
