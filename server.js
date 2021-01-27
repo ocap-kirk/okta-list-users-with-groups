@@ -31,23 +31,31 @@ app.get("/", (request, response) => {
   const userArray = [];
   orgUsersCollection
     .each(user => {
-      const groupsArr = [];
-      const groups = user
-        .listGroups()
-        .each(group => {
-          groupsArr.push(group.id);
-        })
-        .then(() => {
-          const userJ = {};
-          // console.log(user)
-          userJ.id = user.id;
-          userJ.login = user.profile.login;
-          userJ.groups = groupsArr;
-          console.log(userJ);
-          userArray.push(userJ)
-        });
+      return new Promise((resolve, reject) => {
+        // do work, then resolve or reject the promise
+        const groupsArr = [];
+        const groups = user
+          .listGroups()
+          .each(group => {
+            groupsArr.push(group.id);
+          })
+          .then(() => {
+            const userJ = {};
+            // console.log(user)
+            userJ.id = user.id;
+            userJ.login = user.profile.login;
+            userJ.groups = groupsArr;
+            console.log(userJ);
+            userArray.push(userJ);
+            resolve();
+          });
+      });
     })
-    .then(() => console.log("All users have been listed"));
+    .then(() => {
+      console.log("All users have been retrieved");
+      response.json(userArray)
+    });
+  
 });
 
 // listen for requests :)
