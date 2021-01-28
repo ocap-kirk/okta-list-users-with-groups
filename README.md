@@ -1,30 +1,23 @@
-# hello-express
+# okta-list-users-with-groups
 
-A server that serves a webpage, its resources, and some data
-
-
-## Your Project
-
-On the front-end,
-
-- Edit `views/index.html` to change the content of the webpage
-- `public/client.js` is the javacript that runs when you load the webpage
-- `public/style.css` is the styles for `views/index.html`
-- Drag in `assets`, like images or music, to add them to your project
-
-On the back-end,
-
-- your app starts at `server.js`
-- add frameworks and packages in `package.json`
-- safely store app secrets in `.env` (nobody can see this but you and people you invite)
-
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy.
+A server that serves json representing all Okta users in an org with their associated groups.
 
 
-## Made by [Glitch](https://glitch.com/)
+## How to Use
 
-**Glitch** is the friendly community where you'll build the app of your dreams. Glitch lets you instantly create, remix, edit, and host an app, bot or site, and you can invite collaborators or helpers to simultaneously edit code with you.
+Download or clone this repo
+- modify orgUrl and token values in `server.js`
 
-Find out more [about Glitch](https://glitch.com/about).
+- ```npm install```
+- ```npm start```
+- Use the browser or API client to make a call to retrieve the users.
+
+## About
+This example uses the Okta okta-sdk-nodejs library to fetch all the users and then iterate through each user and fetch all the groups. It logs and returns the value as JSON.
+
+This is example code and has not been tested with very many users, use at your own risk.
+
+
+
 
 ( ᵔ ᴥ ᵔ )
